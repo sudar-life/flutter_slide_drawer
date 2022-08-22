@@ -76,6 +76,14 @@ class SliderDrawerWidgetState extends State<SliderDrawerWidget>
   }
 
   @override
+  void didUpdateWidget(covariant SliderDrawerWidget oldWidget) {
+    if (oldWidget.option != widget.option) {
+      _initOption();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     size = MediaQuery.of(context).size;

@@ -18,16 +18,32 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   App({Key? key}) : super(key: key);
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
   final GlobalKey<SliderDrawerWidgetState> drawerKey = GlobalKey();
+
+  bool toggleBackgroundState = false;
+
+  void toggleBackgroundImage() {
+    setState(() {
+      toggleBackgroundState = !toggleBackgroundState;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return SliderDrawerWidget(
         key: drawerKey,
         option: SliderDrawerOption(
-          backgroundImage: Image.asset("assets/sample_background.jpg"),
+          backgroundImage: toggleBackgroundState
+              ? Image.asset("assets/sample_background.jpg")
+              : Image.asset("assets/sample_background2.jpg"),
           backgroundColor: Colors.black,
           sliderEffectType: SliderEffectType.Rounded,
           upDownScaleAmount: 50,
@@ -44,17 +60,29 @@ class App extends StatelessWidget {
             ),
           ),
           body: Container(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: List.generate(
-                  100,
-                  (index) => Container(
-                    padding: const EdgeInsets.all(15),
-                    child: Text("$index Contents "),
-                  ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      onPressed: toggleBackgroundImage,
+                      child: Text('Change Drawer Background')),
                 ),
-              ),
+                Expanded(
+                    child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: List.generate(
+                      100,
+                      (index) => Container(
+                        padding: const EdgeInsets.all(15),
+                        child: Text("$index Contents "),
+                      ),
+                    ),
+                  ),
+                )),
+              ],
             ),
           ),
         ));

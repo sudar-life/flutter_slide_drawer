@@ -1,6 +1,6 @@
 name: flutter_slide_drawer
 description: It would help you make slide_drawer_scaffold easy with animation :)
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/sudar-life/flutter_slide_drawer
 
 environment:

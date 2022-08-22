@@ -47,6 +47,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/sample_background.jpg
+    - assets/sample_background2.jpg
     - assets/default_user.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
