@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 
 enum SliderEffectType { Rounded, Rectangle }
 
+enum SliderDrawerDirection { LTR, RTL }
+
 class SliderDrawerOption {
   final Color backgroundColor;
   final Image? backgroundImage;
   final SliderEffectType sliderEffectType;
   final double radiusAmount;
   final double upDownScaleAmount;
+  final SliderDrawerDirection direction;
   SliderDrawerOption({
     this.backgroundColor = Colors.blue,
     this.sliderEffectType = SliderEffectType.Rectangle,
     this.backgroundImage,
     this.radiusAmount = 0,
     this.upDownScaleAmount = 0,
+    this.direction = SliderDrawerDirection.LTR,
   });
 }
 
@@ -42,7 +46,11 @@ class SliderDrawerWidgetState extends State<SliderDrawerWidget>
   double drawerRate = 0.0;
   bool isOpened = false;
   bool dragPossible = false;
+  late SliderDrawerDirection _direction;
   late SliderDrawerOption option;
+  late EdgeInsetsGeometry drawerPadding;
+  late Alignment backgroundDecorationAlignment;
+  late Alignment backgroundDrawerAlignment;
 
   @override
   void initState() {
@@ -51,8 +59,26 @@ class SliderDrawerWidgetState extends State<SliderDrawerWidget>
     _animationSetup();
   }
 
+  void _setDrawerPadding() {
+    switch (_direction) {
+      case SliderDrawerDirection.LTR:
+        drawerPadding =
+            EdgeInsets.only(left: size.width - (size.width * limitPercent));
+        backgroundDecorationAlignment = Alignment.centerLeft;
+        backgroundDrawerAlignment = Alignment.topLeft;
+        break;
+      case SliderDrawerDirection.RTL:
+        drawerPadding =
+            EdgeInsets.only(right: size.width - (size.width * limitPercent));
+        backgroundDecorationAlignment = Alignment.centerRight;
+        backgroundDrawerAlignment = Alignment.topRight;
+        break;
+    }
+  }
+
   void _initOption() {
     option = widget.option ?? SliderDrawerOption();
+    _direction = option.direction;
     switch (option.sliderEffectType) {
       case SliderEffectType.Rounded:
         upDownScaleAmount = option.upDownScaleAmount;
@@ -79,6 +105,7 @@ class SliderDrawerWidgetState extends State<SliderDrawerWidget>
   void didUpdateWidget(covariant SliderDrawerWidget oldWidget) {
     if (oldWidget.option != widget.option) {
       _initOption();
+      _setDrawerPadding();
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -87,6 +114,7 @@ class SliderDrawerWidgetState extends State<SliderDrawerWidget>
   void didChangeDependencies() {
     super.didChangeDependencies();
     size = MediaQuery.of(context).size;
+    _setDrawerPadding();
   }
 
   double get drawerPosition => (size.width * drawerRate);
@@ -165,7 +193,7 @@ class SliderDrawerWidgetState extends State<SliderDrawerWidget>
           fit: BoxFit.cover,
           colorFilter: new ColorFilter.mode(
               Colors.black.withOpacity(0.4), BlendMode.dstATop),
-          alignment: Alignment.centerLeft,
+          alignment: backgroundDecorationAlignment,
         ),
         color: option.backgroundColor,
       );
@@ -185,27 +213,32 @@ class SliderDrawerWidgetState extends State<SliderDrawerWidget>
         child: Stack(
           children: [
             Positioned(
-              left: -size.width + drawerPosition,
-              right: 0,
+              left: _direction == SliderDrawerDirection.LTR
+                  ? -size.width + drawerPosition
+                  : 0,
+              right: _direction == SliderDrawerDirection.RTL
+                  ? -size.width + drawerPosition
+                  : 0,
               bottom: 0,
               top: 0,
               child: Container(
                 width: size.width * 2,
                 decoration: loadBackgroundDecoration(),
                 child: Align(
-                  alignment: Alignment.topLeft,
+                  alignment: backgroundDrawerAlignment,
                   child: Container(
                     width: size.width,
-                    padding: EdgeInsets.only(
-                        left: size.width - (size.width * limitPercent)),
+                    padding: drawerPadding,
                     child: widget.drawer,
                   ),
                 ),
               ),
             ),
             Positioned(
-              left: drawerPosition,
-              right: -drawerPosition,
+              left: drawerPosition *
+                  (_direction == SliderDrawerDirection.LTR ? 1 : -1),
+              right: drawerPosition *
+                  (_direction == SliderDrawerDirection.RTL ? 1 : -1),
               bottom: upDownScaleAmount * drawerRate,
               top: upDownScaleAmount * drawerRate,
               child: ClipRRect(

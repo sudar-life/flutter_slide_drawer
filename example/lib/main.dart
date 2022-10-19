@@ -48,6 +48,7 @@ class _AppState extends State<App> {
           sliderEffectType: SliderEffectType.Rounded,
           upDownScaleAmount: 50,
           radiusAmount: 50,
+          direction: SliderDrawerDirection.LTR,
         ),
         drawer: CustomDrawer(),
         body: Scaffold(
@@ -58,6 +59,17 @@ class _AppState extends State<App> {
               },
               child: Icon(Icons.menu),
             ),
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  drawerKey.currentState!.toggleDrawer();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Icon(Icons.menu),
+                ),
+              ),
+            ],
           ),
           body: Container(
             child: Column(
