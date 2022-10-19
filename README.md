@@ -8,7 +8,7 @@ To start using this package, add `flutter_slide_drawer` dependency to your `pubs
 
 ```yaml
 dependencies:
-  flutter_slide_drawer: "<latest_release>"
+    flutter_slide_drawer: '<latest_release>'
 ```
 
 ## Documentation
@@ -45,16 +45,18 @@ dependencies:
       sliderEffectType: SliderEffectType.Rounded,
       upDownScaleAmount: 50,
       radiusAmount: 50,
+      direction: SliderDrawerDirection.LTR,
     )
 ```
 
-| Parameters          | Value              | Required | Docs                                                                                                         |
-| ------------------- | ------------------ | :------: | ------------------------------------------------------------------------------------------------------------ |
-| `backgroundImage`   | `Image Widget`     |    No    | be covered Background Image in Drawer                                                                        |
-| `backgroundColor`   | `Color`            |    No    | background Color in Drawer (default Color is blue)                                                           |
-| `sliderEffectType`  | `SliderEffectType` |    No    | Slide push Effect Type ( Rounded , Rectangle)                                                                |
-| `upDownScaleAmount` | `double`           |    No    | If you use SliderEffectType.Runded then you can use this parameters. It make margin Vertical in Scaffold     |
-| `radiusAmount`      | `double`           |    No    | If you use SliderEffectType.Runded then you can use this parameters. It make as amount as radius in Scaffold |
+| Parameters          | Value                   | Required | Docs                                                                                                         |
+| ------------------- | ----------------------- | :------: | ------------------------------------------------------------------------------------------------------------ |
+| `backgroundImage`   | `Image Widget`          |    No    | be covered Background Image in Drawer                                                                        |
+| `backgroundColor`   | `Color`                 |    No    | background Color in Drawer (default Color is blue)                                                           |
+| `sliderEffectType`  | `SliderEffectType`      |    No    | Slide push Effect Type ( Rounded , Rectangle)                                                                |
+| `upDownScaleAmount` | `double`                |    No    | If you use SliderEffectType.Runded then you can use this parameters. It make margin Vertical in Scaffold     |
+| `radiusAmount`      | `double`                |    No    | If you use SliderEffectType.Runded then you can use this parameters. It make as amount as radius in Scaffold |
+| `direction`         | `SliderDrawerDirection` |    No    | Drawer direction option, default is SliderDrawerDirection.LTR                                                |
 
 ---
 
