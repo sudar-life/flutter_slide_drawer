@@ -151,18 +151,27 @@ class SliderDrawerWidgetState extends State<SliderDrawerWidget>
   }
 
   _onDragStart(DragStartDetails details) {
-    if (isOpened && details.globalPosition.dx > size.width * 0.8) {
+    if (isOpened &&
+        (_direction == SliderDrawerDirection.LTR
+            ? details.globalPosition.dx > size.width * 0.8
+            : details.globalPosition.dx < size.width * 0.2)) {
       dragPossible = true;
     }
 
-    if (!isOpened && details.globalPosition.dx < 40) {
+    if (!isOpened &&
+        (_direction == SliderDrawerDirection.LTR
+            ? details.globalPosition.dx < size.width * 0.2
+            : details.globalPosition.dx > size.width * 0.8)) {
       dragPossible = true;
     }
   }
 
   _onDragUpdate(DragUpdateDetails details) {
     if (dragPossible) {
-      updateDrawerRate(details.globalPosition.dx / size.width);
+      var rate = _direction == SliderDrawerDirection.LTR
+          ? details.globalPosition.dx / size.width
+          : (size.width - details.globalPosition.dx) / size.width;
+      updateDrawerRate(rate);
     }
   }
 
